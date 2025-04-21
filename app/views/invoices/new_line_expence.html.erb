@@ -1,0 +1,7 @@
+<%= @form.simple_fields_for :line_expences do |l| %>
+  <div class="d-flex gap-2">
+    <%= l.input :name %>
+    <%= l.input :quantity %>
+    <%= l.input :rate %>
+  </div>
+<% end %>
