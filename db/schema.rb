@@ -30,6 +30,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_15_120635) do
     t.integer "rate"
     t.integer "quantity"
     t.string "name"
+    t.integer "total"
     t.bigint "invoice_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

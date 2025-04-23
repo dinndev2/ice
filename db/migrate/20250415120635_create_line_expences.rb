@@ -4,6 +4,7 @@ class CreateLineExpences < ActiveRecord::Migration[7.2]
       t.integer :rate
       t.integer :quantity
       t.string :name
+      t.integer :total 
       t.references :invoice, foreign_key: true
       t.timestamps
     end

@@ -5,34 +5,24 @@
   <%= f.input :to %>
   <%= f.input :date, as: :string, input_html: {type: :date, onclick: "this.showPicker()"} %>
   <%= f.input :due_date, as: :string, input_html: {type: :date, onclick: "this.showPicker()"} %>
-  <div data-controller="form">
+  <div data-controller="form" data-form-total-value="0">
     <%= f.simple_fields_for :line_expences do |l| %>
-      <div class="d-flex gap-2" data-form-target="expenceLine">
-        <%= l.input :name %>
-        <%= l.input :quantity %>
-        <%= l.input :rate %>
-        <% if l.object.persisted? %>
+      <div data-form-target="expenceLine">
+        <div data-form-target="shadow" class="d-flex gap-2" >  
+          <%= l.input :name %>
+          <%= l.input :quantity, input_html: {"data-action": "input->form#calculateLineTotal"} %>
+          <%= l.input :rate, input_html: {"data-action": "input->form#calculateLineTotal"} %>
+          <%= l.input :total, input_html: {readonly: true, "data-form-target": "expenceTotal"} %>
           <%= l.hidden_field :_destroy %>
           <button type="button" class="btn btn-danger btn-sm" data-action="click->form#removeLine">Delete</button>
-        <% end %>
+        </div>
       </div>
     <% end %>
-    <div class="visually-hidden" data-form-target="expenceLine" id="expenceLine">
-      <div data-form-target="shadow"> 
-        <label type="text" name="invoice_line_expenses_attributes_new_name"> Name </label>
-        <input type="text" name="invoice[line_expences_attributes][new][name]">
-        <label type="text" name="invoice_line_expenses_attributes_new_quantity"> Quantity </label>
-        <input type="text" name="invoice[line_expences_attributes][new][quantity]">
-        <label type="text" name="invoice_line_expenses_attributes_new_rate"> Rate </label>
-        <input type="text" name="invoice[line_expences_attributes][new][rate]"> 
-        <button type="button" class="btn btn-danger btn-sm" data-action="click->form#removeLine">Delete</button>
-      </div>
-    </div>
     <button class="btn btn-primary btn-sm" data-action="click->form#addNewLine" type="button">
       Add new line
       <i class="bi bi-plus-lg"></i>
     </button>
+    <%= f.input :total, input_html: {"data-form-target": "totalInvoiceInput"} %> 
+    <%= f.submit %> 
   </div>
-  <%= f.input :total %> 
-  <%= f.submit %> 
 <% end %> 
