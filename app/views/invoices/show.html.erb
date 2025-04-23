@@ -4,5 +4,5 @@
   <p><%= @invoice.from %></p>
   <p><%= @invoice.to %></p> 
   <%= link_to "Edit", edit_invoice_path(@invoice) %>
-  <%= %>
+  <%= link_to "Download", download_pdf_invoice_path(@invoice, format: :pdf) %>
 </div>

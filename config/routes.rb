@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :invoices do
     member do
       get :new_line_expence
+      get :download_pdf
     end
   end
 

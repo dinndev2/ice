@@ -29,7 +29,7 @@ export default class extends Controller {
     const quantityVal = parseFloat(quantity?.value) || 0
   
     const calcTotal = rateVal * quantityVal
-    total.value = calcTotal.toFixed(2)
+    total.value = calcTotal
     this.updateInvoiceTotal()
   }
   
@@ -58,9 +58,10 @@ export default class extends Controller {
       hiddenDeleteInput.setAttribute("value", "true")
       parentExpenceLine.classList.add('visually-hidden')
 
-      // on remove, reset vlaue of current total input as it's only setting it to hidden
-      // this is for exsiting items to pass on form at the same time we are giving the client a real time calculation
+      // on remove, reset value of current total input as it's only setting it to hidden
+      // this is for existing items to pass on form at the same time we are giving the client a real time calculation
       hiddenCurrentTotalInput.setAttribute("value", 0)
+      hiddenCurrentTotalInput.value = 0
     } else {
       parentExpenceLine.remove()
     }

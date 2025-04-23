@@ -1,5 +1,5 @@
 class InvoicesController < ApplicationController
-  before_action :set_invoice, only: [:show, :edit, :update, :destroy]
+  before_action :set_invoice, only: [:show, :edit, :update, :destroy, :download_pdf]
 
   def index
     @invoices = Invoice.all
@@ -33,7 +33,6 @@ class InvoicesController < ApplicationController
   def new
     @invoice = Invoice.new
     @invoice.line_expences.build
-    
   end
 
   def destroy
@@ -41,8 +40,15 @@ class InvoicesController < ApplicationController
     redirect_to invoices_path, notice: "Invoice destroyed"
   end
 
-  def new_line_expence
-
+  def download_pdf
+    respond_to do |format|
+      format.html
+      format.pdf do
+        render pdf: "#{@invoice.name}_invoice",
+        template: "invoices/download_pdf",
+        disposition: 'attachment'
+      end
+    end
   end
 
   private
@@ -53,6 +59,5 @@ class InvoicesController < ApplicationController
 
   def set_invoice
     @invoice = Invoice.find(params[:id])
-    @form = params[:form]
   end
 end
