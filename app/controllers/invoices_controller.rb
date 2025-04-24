@@ -18,6 +18,7 @@ class InvoicesController < ApplicationController
   end
 
   def edit
+    @invoice.line_expences.build unless @invoice.line_expences.present?
   end
 
   def update

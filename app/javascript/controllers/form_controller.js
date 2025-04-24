@@ -6,7 +6,7 @@ export default class extends Controller {
   static values = { total: Number }
 
   initialize() {
-    this.lineFormCount = this.expenceLineTargets.length 
+    this.lineFormCount = this.expenceLineTargets.length - 1
   }
 
 
@@ -43,8 +43,9 @@ export default class extends Controller {
   addNewLine() {
     // get the current number of lines for indexing
     const newLine = this.shadowTarget.cloneNode(true)
-    const html = newLine.innerHTML.replace(/\d+/g, `${this.lineFormCount}`)
+    const html = newLine.innerHTML.replace(/new/g, `${this.lineFormCount}`);
     newLine.innerHTML = html
+    newLine.classList.remove('visually-hidden')
     this.element.appendChild(newLine)
     this.lineFormCount++
   }

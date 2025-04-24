@@ -8,7 +8,7 @@
   <div data-controller="form" data-form-total-value="0">
     <%= f.simple_fields_for :line_expences do |l| %>
       <div data-form-target="expenceLine">
-        <div data-form-target="shadow" class="d-flex gap-2" >  
+        <div class="d-flex gap-2" >  
           <%= l.input :name %>
           <%= l.input :quantity, input_html: {"data-action": "input->form#calculateLineTotal"} %>
           <%= l.input :rate, input_html: {"data-action": "input->form#calculateLineTotal"} %>
@@ -18,6 +18,40 @@
         </div>
       </div>
     <% end %>
+    <div data-form-target="expenceLine" id="line-expense-template">
+      <div data-form-target="shadow" class="d-flex gap-2 mb-2 visually-hidden">
+        <label for="invoice_line_expences_attributes_new_name"> Name </label>
+        <input type="text"
+                name="invoice[line_expences_attributes][new][name]"
+                class="form-control"
+                id="invoice_line_expences_attributes_new_name"
+                 />
+        <label for="invoice_line_expences_attributes_new_quantity"> Quantity </label>
+        <input type="number" 
+              name="invoice[line_expences_attributes][new][quantity]" 
+              class="form-control" 
+              id="invoice_line_expences_attributes_new_quantity"
+              data-action="input->form#calculateLineTotal" />
+        <label for="invoice_line_expences_attributes_new_rate"> Rate </label>
+        <input type="number"
+              name="invoice[line_expences_attributes][new][rate]" 
+              class="form-control" 
+              data-action="input->form#calculateLineTotal"
+              id="invoice_line_expences_attributes_new_rate"
+              />
+        <label for="invoice_line_expences_attributes_new_total"> Total </label>
+        <input type="number"
+              name="invoice[line_expences_attributes][new][total]" 
+              class="form-control"
+              id="invoice_line_expences_attributes_new_total"
+              readonly 
+              data-form-target="expenceTotal" />
+        <input type="hidden" name="invoice[line_expences_attributes][new][_destroy]" />
+        <button type="button" class="btn btn-danger btn-sm" data-action="click->form#removeLine">
+          Delete
+        </button>
+      </div>
+    </div>
     <button class="btn btn-primary btn-sm" data-action="click->form#addNewLine" type="button">
       Add new line
       <i class="bi bi-plus-lg"></i>
