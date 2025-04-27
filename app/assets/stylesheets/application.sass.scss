@@ -1,3 +1,47 @@
 .turbo-progress-bar {
   background: var(--bs-warning)
 }
+
+$main-bg: #F8F8F8;
+$text-title: #4E4C4C;
+
+
+
+input.is-valid,
+textarea.is-valid,
+select.is-valid {
+  background-image: none !important;
+  padding-right: 0.75rem !important; // optional: reduce padding if needed
+}
+
+input.is-invalid,
+textarea.is-invalid,
+select.is-invalid {
+  background-image: none !important;
+  padding-right: 0.75rem !important; // optional: reduce padding if needed
+}
+
+body {
+  background: $main-bg;
+}
+
+.text-title {
+  color: $text-title
+}
+
+.main-bg {
+  background: $main-bg;
+}
+
+.invoice_name {
+  margin-bottom: 0 !important;
+}
+
+#invoice_name {
+  font-size: 1.5rem !important;
+  font-weight: 600;
+}
+
+.invoice_details {
+  height: 75% !important;
+}

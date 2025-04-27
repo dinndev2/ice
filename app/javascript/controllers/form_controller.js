@@ -2,16 +2,12 @@ import { Controller } from "@hotwired/stimulus"
 
 
 export default class extends Controller {
-  static targets = ["expenses", "shadow", "expenceLine", "expenceTotal", "totalInvoiceInput"]
+  static targets = ["expenses", "shadow", "expenceLine", "expenceTotal", "totalInvoiceInput", "expenceParentContainer"]
   static values = { total: Number }
 
   initialize() {
     this.lineFormCount = this.expenceLineTargets.length - 1
-  }
-
-
-  hasValue(input) {
-    return input.value.trim() !== "";
+    this.updateInvoiceTotal() 
   }
 
   totalValueChanged() {
@@ -20,7 +16,7 @@ export default class extends Controller {
 
   calculateLineTotal(event) {
     const input = event.currentTarget
-    const line = input.closest("[data-form-target='shadow']")
+    const line = input.closest('[data-form-target="expenceLine"], [data-form-target="shadow"]');
     const rate = line.querySelector("input[name*='rate']")
     const quantity = line.querySelector("input[name*='quantity']")
     const total = line.querySelector("input[name*='total']")
@@ -33,20 +29,19 @@ export default class extends Controller {
     this.updateInvoiceTotal()
   }
   
-
   updateInvoiceTotal() {
     // gather all of expence total input value and update the totalValue 
     let total = this.expenceTotalTargets.map(input => Number(input.value)).reduce((acc, curr) => acc + curr, 0)
     this.totalValue = total
   }
 
-  addNewLine() {
+  addNewLine(event) {
     // get the current number of lines for indexing
     const newLine = this.shadowTarget.cloneNode(true)
     const html = newLine.innerHTML.replace(/new/g, `${this.lineFormCount}`);
     newLine.innerHTML = html
     newLine.classList.remove('visually-hidden')
-    this.element.appendChild(newLine)
+    this.expenceParentContainerTarget.appendChild(newLine)
     this.lineFormCount++
   }
 
