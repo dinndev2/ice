@@ -4,6 +4,7 @@
 
 $main-bg: #F8F8F8;
 $text-title: #4E4C4C;
+$primary-bg: #4E4C4C;
 
 
 
@@ -29,15 +30,20 @@ body {
   color: $text-title
 }
 
+.primary-bg {
+  background: $text-title;
+  color: white;
+}
+
 .main-bg {
   background: $main-bg;
 }
 
-.invoice_name {
+.invoice_name, .invoice_total {
   margin-bottom: 0 !important;
 }
 
-#invoice_name {
+#invoice_name, #invoice_total {
   font-size: 1.5rem !important;
   font-weight: 600;
 }
@@ -45,3 +51,26 @@ body {
 .invoice_details {
   height: 75% !important;
 }
+
+.custom-hover-danger:hover {
+  color: #e74c3c;
+  transition: color 0.3s ease;
+  cursor: pointer
+}
+
+.primary-border {
+  border: solid 2px $primary-bg;
+}
+
+.custom-hover-primary:hover {
+  color: white;
+  transition: color 0.3s ease;
+  cursor: pointer;
+  background:$primary-bg;
+  i {
+    color: white;
+    transition: color 0.3s ease;
+  }
+}
+
+
