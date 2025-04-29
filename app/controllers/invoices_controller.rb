@@ -24,6 +24,11 @@ class InvoicesController < ApplicationController
   def update
     @invoice = Invoice.find(params[:id])
     @invoice.assign_attributes(invoice_params)
+    # attach 
+    if invoice_params[:company_logo].present? || !@invoice.company_logo.attached?
+      @invoice.company_logo.attach(invoice_params[:company_logo])
+    end
+    
     if @invoice.save
       redirect_to invoice_path(@invoice), notice: "Invoice updated"
     else
@@ -55,7 +60,7 @@ class InvoicesController < ApplicationController
   private
 
   def invoice_params
-    params.require(:invoice).permit(:name, :details, :from, :to, :date, :due_date, :total, line_expences_attributes: [:id, :quantity, :name, :rate, :total, :_destroy] )
+    params.require(:invoice).permit(:name, :details, :from, :to, :date, :due_date, :total, :company_logo,line_expences_attributes: [:id, :quantity, :name, :rate, :total, :_destroy] )
   end
 
   def set_invoice

@@ -1,8 +1,5 @@
 <%= link_to "Back to invoices", invoices_path %>
 <div>
-  <h1><%= @invoice.details %></h1>
-  <p><%= @invoice.from %></p>
-  <p><%= @invoice.to %></p> 
-  <%= link_to "Edit", edit_invoice_path(@invoice) %>
+  <%= render 'form', invoice: @invoice %> 
   <%= link_to "Download", download_pdf_invoice_path(@invoice, format: :pdf) %>
 </div>

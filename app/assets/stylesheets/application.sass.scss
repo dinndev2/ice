@@ -5,6 +5,7 @@
 $main-bg: #F8F8F8;
 $text-title: #4E4C4C;
 $primary-bg: #4E4C4C;
+$secondary-color: #ababab;
 
 
 
@@ -33,6 +34,10 @@ body {
 .primary-bg {
   background: $text-title;
   color: white;
+}
+
+.secondary-color {
+  color: $secondary-color;
 }
 
 .main-bg {
@@ -72,5 +77,11 @@ body {
     transition: color 0.3s ease;
   }
 }
+
+.border-dashed {
+  border-style: dashed !important;
+  cursor: pointer;
+}
+
 
 

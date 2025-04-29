@@ -1,9 +1,22 @@
 <div data-controller="form" class="container bg-white mt-5 p-3 rounded-3">  
   <%= simple_form_for invoice, default: {input_html: { class: "form-control" }} do |f| %>
-    <div class="d-flex main-bg mb-5 p-2 gap-2 align-items-center w-25 rounded-2 border">  
-      <label for="invoice_name" class="fs-2 fw-semibold .text-title"> INVOICE </label>
-      <%= f.input :name, label: false %>
-    </div> 
+    <div class="d-flex align-items-start mb-5 justify-content-between">  
+      <div class="d-flex main-bg p-2 gap-2 align-items-center w-25 rounded-2 border">  
+        <label for="invoice_name" class="fs-2 fw-semibold .text-title"> INVOICE </label>
+        <%= f.input :name, label: false %>
+      </div>
+      <div class="w-25 d-flex flex-column align-items-end justify-content-end" data-controller="image">
+        <label for="invoice_company_logo" class="main-bg rounded-2 border-dashed  text-center p-3 secondary-color border-light-subtle d-flex flex-column">
+          <% if invoice.company_logo.representable? %>
+            <%= image_tag invoice.company_logo.representation(resize_to_limit: [150, 150]), "data-image-target": "displayer", accept: 'image/png,image/jpeg,image/jpg,image/gif,image/svg+xml' %>
+          <% else %>
+            <img data-image-target="displayer" accept='image/png,image/jpeg,image/jpg,image/gif,image/svg+xml' src="" alt="Upload Company Logo">
+          <% end %>
+        </label>
+        <%= f.input :company_logo, label: false, input_html: {"data-action": "change->image#now", class: "visually-hidden"} %>
+        <span data-image-target="errorMessage" id="company_logo_error" class="text-danger fs-6"> </span>
+      </div>
+    </div>
     <div class="d-flex justify-content-between">
       <div class="w-50">
         <%= f.input :details, label: 'Who is this from', input_html: {class: "h-100"} %>
@@ -115,5 +128,6 @@
         <%= f.input :total, label: false, input_html: {"data-form-target": "totalInvoiceInput", readonly: true} %> 
       </div> 
     </div>
+    <%= f.submit %>
   <% end %>
 </div>
