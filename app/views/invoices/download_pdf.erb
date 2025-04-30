@@ -10,6 +10,17 @@
         padding: 0;
       }
 
+      .items-table th:first-child {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+
+      }
+
+      .items-table th:last-child {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+
       .header {
         display: table;
         width: 100%;
@@ -83,17 +94,19 @@
       <div class="header">
         <h1>INVOICE <%= @invoice.name %></h1>
         <div class="logo">
-          <%= image_tag @invoice.company_logo.representation(resize_to_limit: [150, 150]), "data-image-target": "displayer", accept: 'image/png,image/jpeg,image/jpg,image/gif,image/svg+xml' %>
+          <% if  @invoice.company_logo.present?  %>
+            <%= image_tag @invoice.company_logo.representation(resize_to_limit: [150, 150]), "data-image-target": "displayer", accept: 'image/png,image/jpeg,image/jpg,image/gif,image/svg+xml' %>
+          <% end %>
         </div>
       </div>
 
       <table class="info-table">
         <tr>
           <td><strong>From:</strong> <%= @invoice.from %></td>
-          <td style="text-align: right;"><strong>To:</strong> <%= @invoice.to %></td>
+          <td style="text-align: right;"><strong>Date:</strong> <%= @invoice.date %></td>
         </tr>
         <tr>
-          <td><strong>Date:</strong> <%= @invoice.date %></td>
+          <td><strong>To</strong> <%= @invoice.to %></td>
           <td style="text-align: right;"><strong>Due Date:</strong> <%= @invoice.due_date %></td>
         </tr>
         <tr>
@@ -101,7 +114,6 @@
         </tr>
       </table>
 
-      <h3>Expenses Line</h3>
       <table class="items-table">
         <thead>
           <tr>

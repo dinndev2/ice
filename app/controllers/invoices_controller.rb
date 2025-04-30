@@ -1,5 +1,5 @@
 class InvoicesController < ApplicationController
-  before_action :set_invoice, only: [:show, :edit, :update, :destroy, :download_pdf]
+  before_action :set_invoice, only: [:show, :edit, :update, :destroy, :download_pdf, :send_and_save]
 
   def index
     @invoices = Invoice.all
@@ -44,6 +44,10 @@ class InvoicesController < ApplicationController
   def destroy
     @invoice.destroy
     redirect_to invoices_path, notice: "Invoice destroyed"
+  end
+
+  def send_and_save
+    InvoiceMailer.with(invoice_id: @invoice.id).send_invoice.deliver_later
   end
 
   def download_pdf

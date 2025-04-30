@@ -2,4 +2,5 @@
 <div>
   <%= render 'form', invoice: @invoice %> 
   <%= link_to "Download", download_pdf_invoice_path(@invoice, format: :pdf) %>
+  <%= button_to "Send And Save", send_and_save_invoice_path(@invoice), method: :post %>
 </div>
