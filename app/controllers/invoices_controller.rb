@@ -28,7 +28,7 @@ class InvoicesController < ApplicationController
     if invoice_params[:company_logo].present? || !@invoice.company_logo.attached?
       @invoice.company_logo.attach(invoice_params[:company_logo])
     end
-    
+
     if @invoice.save
       redirect_to invoice_path(@invoice), notice: "Invoice updated"
     else
@@ -47,6 +47,7 @@ class InvoicesController < ApplicationController
   end
 
   def download_pdf
+    @expences = @invoice.line_expences
     respond_to do |format|
       format.html
       format.pdf do

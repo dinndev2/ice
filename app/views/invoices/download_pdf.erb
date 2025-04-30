@@ -1,5 +1,135 @@
-<div>
-  <h1><%= @invoice.details %></h1>
-  <p><%= @invoice.from %></p>
-  <p><%= @invoice.to %></p> 
-</div>
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+      body {
+        font-family: "Plus Jakarta Sans", sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      .header {
+        display: table;
+        width: 100%;
+        margin-bottom: 2em;
+      }
+
+      .header h1 {
+        display: table-cell;
+        vertical-align: top;
+        font-size: 2em;
+      }
+
+      .header .logo {
+        display: table-cell;
+        text-align: right;
+        vertical-align: top;
+      }
+
+      .info-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 2em;
+      }
+
+      .info-table td {
+        padding: 12px 0;
+        vertical-align: top;
+      }
+
+      .items-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+      }
+
+      .items-table th {
+        padding: 8px;
+        font-size: 15px;
+        background: #4E4C4C;
+        color: white;
+      }
+
+      .items-table td {
+        padding: 8px;
+      }
+
+      .total-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1em;
+      }
+
+      .total-table td {
+        font-size: 18px;
+        padding: 10px;
+      }
+
+      .total-amount {
+        width: 150px;
+        text-align: center;
+        background: #F8F8F8;
+        border-radius: 5px;
+        padding: 10px 2px;
+        border: 1px solid rgb(201, 197, 197);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-5 p-3">
+
+      <div class="header">
+        <h1>INVOICE <%= @invoice.name %></h1>
+        <div class="logo">
+          <%= image_tag @invoice.company_logo.representation(resize_to_limit: [150, 150]), "data-image-target": "displayer", accept: 'image/png,image/jpeg,image/jpg,image/gif,image/svg+xml' %>
+        </div>
+      </div>
+
+      <table class="info-table">
+        <tr>
+          <td><strong>From:</strong> <%= @invoice.from %></td>
+          <td style="text-align: right;"><strong>To:</strong> <%= @invoice.to %></td>
+        </tr>
+        <tr>
+          <td><strong>Date:</strong> <%= @invoice.date %></td>
+          <td style="text-align: right;"><strong>Due Date:</strong> <%= @invoice.due_date %></td>
+        </tr>
+        <tr>
+          <td colspan="2"><strong>Details:</strong> <%= @invoice.details %></td>
+        </tr>
+      </table>
+
+      <h3>Expenses Line</h3>
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th>Item / Service</th>
+            <th>Quantity</th>
+            <th>Rate</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @expences.each do |expence| %>
+            <tr>
+              <td><%= expence.name %></td>
+              <td><%= expence.quantity %></td>
+              <td><%= number_to_currency(expence.rate) %></td>
+              <td><%= number_to_currency(expence.total) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <table class="total-table">
+        <tr>
+          <td style="text-align: right;"><strong>Total Due:</strong></td>
+          <td class="total-amount"><%= number_to_currency(@invoice.total) %></td>
+        </tr>
+      </table>
+
+    </div>
+  </body>
+</html>
