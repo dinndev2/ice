@@ -1,2 +1,6 @@
-<%= render @invoices %>
-<%= link_to "Create new Invoice", new_invoice_path %>
+
+<%= link_to "Create new Invoice", new_invoice_path, data: {turbo_frame: dom_id(Invoice.new)} %>
+<%= turbo_frame_tag "invoices" do %>
+  <%= render @invoices %>
+<% end %>
+<%= turbo_frame_tag Invoice.new %>

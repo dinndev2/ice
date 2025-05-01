@@ -1,0 +1,2 @@
+<%= turbo_stream.prepend "invoices", partial: "invoices/invoice", locals: {invoice: @invoice} %>
+<%= turbo_stream.update Invoice.new, "" %>

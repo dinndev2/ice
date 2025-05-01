@@ -1,5 +1,5 @@
 class InvoicesController < ApplicationController
-  before_action :set_invoice, only: [:show, :edit, :update, :destroy, :download_pdf, :send_and_save]
+  before_action :set_invoice, only: [:show, :edit, :update, :destroy, :download_pdf, :send_and_save_modal_content]
 
   def index
     @invoices = Invoice.all
@@ -11,7 +11,11 @@ class InvoicesController < ApplicationController
   def create
     @invoice = Invoice.new(invoice_params)
     if @invoice.save 
-      redirect_to invoice_path(@invoice), notice: "Invoice created"
+      respond_to do |format|
+        format.html { redirect_to invoice_path(@invoice), notice: "Invoice created" }
+        format.turbo_stream
+      end
+       
     else
       render :new, status: :unprocessable_entity
     end
@@ -43,11 +47,14 @@ class InvoicesController < ApplicationController
 
   def destroy
     @invoice.destroy
-    redirect_to invoices_path, notice: "Invoice destroyed"
+    respond_to do |format|
+      format.html { redirect_to invoices_path, notice: "Invoice destroyed!" }
+      format.turbo_stream
+    end
   end
 
-  def send_and_save
-    InvoiceMailer.with(invoice_id: @invoice.id).send_invoice.deliver_later
+  def send_and_save_modal_content
+    
   end
 
   def download_pdf

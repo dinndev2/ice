@@ -1,5 +1,4 @@
-<div>
-  <%= invoice.id %>
-  <%= invoice.details %>
-  <%= link_to "View", invoice_path(invoice) %>
-</div>
+<%= turbo_frame_tag invoice do %>
+  <%= render 'form', invoice: invoice %>
+  <%= button_to "Destroy", invoice_path(invoice), method: :delete %>
+<% end %> 
