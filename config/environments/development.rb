@@ -42,7 +42,17 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   config.action_mailer.delivery_method = :smtp
-
+  config.action_mailer.smtp_settings = {
+    address:         Rails.application.credentials.dig(:smtp, :address),
+    port:            Rails.application.credentials.dig(:smtp, :port),
+    domain:          "gmail.com",
+    user_name:       Rails.application.credentials.dig(:smtp, :user_name),
+    password:        Rails.application.credentials.dig(:smtp, :password),
+    authentication:  "plain",
+    enable_starttls: true,
+    open_timeout:    5,
+    read_timeout:    5
+  }
 
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 
