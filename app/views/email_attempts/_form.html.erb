@@ -1,0 +1,12 @@
+<div class="mt-4">  
+  <%= simple_form_for email_attempt, default: {input_html: { class: "form-control" }} do |f| %>
+    <%= f.input :recipient %>
+    <%= f.input :subject %>
+    <%= f.input :content %>
+    <%= f.input :invoice_id, as: :hidden, input_html: {value: @invoice.id} %>
+    <button type="submit" class="d-inline-flex align-items-center custom-hover-primary primary-border py-1 px-2 gap-2 rounded" data-action="click->form#addNewLine" type="button">
+      Send
+      <i class="bi bi-send"></i>
+    </button>
+  <% end %>
+</div>

@@ -1,0 +1,7 @@
+<%= turbo_frame_tag "modal" do %>
+  <div class="p-4">
+    <h4 class="text-title"> Send this invoice to? </h4>
+    <span class="fs-6 mb-4 text-secondary"> Send this invoice directly via email. </span>
+    <%= render 'email_attempts/form', email_attempt: @email_attempt %>
+  </div>
+<% end %>

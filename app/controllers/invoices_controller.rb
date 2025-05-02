@@ -1,5 +1,5 @@
 class InvoicesController < ApplicationController
-  before_action :set_invoice, only: [:show, :edit, :update, :destroy, :download_pdf, :send_and_save_modal_content]
+  before_action :set_invoice, only: [:show, :edit, :update, :destroy, :download_pdf]
 
   def index
     @invoices = Invoice.all
@@ -53,9 +53,6 @@ class InvoicesController < ApplicationController
     end
   end
 
-  def send_and_save_modal_content
-    
-  end
 
   def download_pdf
     @expences = @invoice.line_expences

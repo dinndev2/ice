@@ -15,6 +15,11 @@ Rails.application.routes.draw do
     member do
       get :new_line_expence
       get :download_pdf
+    end
+  end
+
+  resources :email_attempts do
+    collection do
       get :send_and_save_modal_content
     end
   end

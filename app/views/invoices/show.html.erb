@@ -2,6 +2,5 @@
 <div>
   <%= render 'form', invoice: @invoice %> 
   <%= link_to "Download", download_pdf_invoice_path(@invoice, format: :pdf) %>
-  <%= link_to "Send And Save", send_and_save_modal_content_invoice_path(@invoice), data: {turbo_frame: "modal"} %>
-  <%= turbo_frame_tag "modal" %>
+  <%= link_to "Send And Save", send_and_save_modal_content_email_attempts_path(invoice_id: @invoice), data: {turbo_frame: "modal"} %>
 </div> 

@@ -9,3 +9,6 @@ application.register("form", FormController)
 
 import ImageController from "./image_controller"
 application.register("image", ImageController)
+
+import ModalController from "./modal_controller"
+application.register("modal", ModalController)
