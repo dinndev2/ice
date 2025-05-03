@@ -9,6 +9,15 @@ class Invoice < ApplicationRecord
   validates :details, :name, presence: true
 
 
+  def readable_date
+    date&.strftime("%B %d, %Y")
+  end
+
+  def readable_name
+    "#{name}_.pdf"
+  end
+
+
   def company_logo_must_be_image
     return unless company_logo.attached?
 

@@ -1,6 +1,17 @@
+<div class="container">
+  <h1 class="text-title mb-4 mt-4 fs-2">Invoices</h1>
+  <div class="d-flex flex-column">  
+    <%= link_to new_invoice_path,
+      data: { turbo_frame: dom_id(Invoice.new) },
+      class: "d-inline-flex align-items-center custom-button mb-4 custom-hover-primary primary-border py-1 px-2 gap-2 rounded text-decoration-none text-title w-25" do %>
+        Create new Invoice
+        <i class="bi bi-plus fs-4"></i>
+    <% end %>
 
-<%= link_to "Create new Invoice", new_invoice_path, data: {turbo_frame: dom_id(Invoice.new)} %>
-<%= turbo_frame_tag "invoices" do %>
-  <%= render @invoices %>
-<% end %>
-<%= turbo_frame_tag Invoice.new %>
+    <div class="d-flex gap-2">  
+      <%= render @invoices %>
+    </div>
+  </div>
+  <%= turbo_frame_tag Invoice.new %>
+</div>
+
