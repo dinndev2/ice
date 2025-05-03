@@ -4,6 +4,7 @@ class EmailAttemptsController < ApplicationController
     @invoice = Invoice.find(email_attempt_params[:invoice_id])
 
     if @email_attempt.save
+      sleep 1.seconds
       InvoiceMailer.with(email_attempt_id: @email_attempt.id).send_invoice.deliver_later
     else
       render :send_and_save_modal_content, status: :unprocessable_entity

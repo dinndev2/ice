@@ -2,16 +2,24 @@ import { Controller } from "@hotwired/stimulus"
 
 
 export default class extends Controller {
-  static targets = ["expenses", "shadow", "expenceLine", "expenceTotal", "totalInvoiceInput", "expenceParentContainer"]
-  static values = { total: Number }
+  static targets = ["expenses", "shadow", "expenceLine", "expenceTotal", "totalInvoiceInput", "expenceParentContainer", "spinner"]
+  static values = { total: Number, role: String }
 
   initialize() {
-    this.lineFormCount = this.expenceLineTargets.length - 1
-    this.updateInvoiceTotal() 
+    if(this.roleValue == "invoice") {
+      this.lineFormCount = this.expenceLineTargets.length - 1
+      this.updateInvoiceTotal() 
+    }
   }
 
   totalValueChanged() {
-    this.totalInvoiceInputTarget.value = this.totalValue
+    if(this.roleValue == "invoice") {
+      this.totalInvoiceInputTarget.value = this.totalValue
+    }
+  }
+
+  showLoader(event) {
+    this.spinnerTarget.classList.remove('visually-hidden');
   }
 
   calculateLineTotal(event) {

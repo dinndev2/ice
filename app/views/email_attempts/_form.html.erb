@@ -1,12 +1,21 @@
-<div class="mt-4">  
+<div class="mt-4" data-controller="form" data-form-role-value="email">  
   <%= simple_form_for email_attempt, default: {input_html: { class: "form-control" }} do |f| %>
     <%= f.input :recipient %>
     <%= f.input :subject %>
     <%= f.input :content %>
     <%= f.input :invoice_id, as: :hidden, input_html: {value: @invoice.id} %>
-    <button type="submit" class="d-inline-flex align-items-center custom-hover-primary primary-border py-1 px-2 gap-2 rounded" data-action="click->form#addNewLine" type="button">
+    <div class="d-flex flex-column gap-2 mb-3 ">   
+      <span> Attachments </span>
+      <%= link_to download_pdf_invoice_path(@invoice, format: :pdf), class: "text-title gap-2 d-flex align-items-center" do %>
+        <i class="bi bi-file-earmark-pdf fs-2"></i>
+        <span><%= @invoice.name %>_.pdf</span>
+      <% end %> 
+    </div>
+    <button type="submit" class="d-inline-flex align-items-center custom-hover-primary primary-border py-1 px-2 gap-2 rounded" data-action="click->form#showLoader">
       Send
       <i class="bi bi-send"></i>
+      <i class="bi bi-check-circle-fill text-title visually-hidden" data-modal-target="success"></i>
+      <span class="spinner-border visually-hidden spinner-border-sm"  data-form-target="spinner" data-modal-target="spinner" aria-hidden="true"></span>
     </button>
   <% end %>
 </div>
