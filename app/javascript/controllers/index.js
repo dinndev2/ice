@@ -7,6 +7,9 @@ import { application } from "./application"
 import FormController from "./form_controller"
 application.register("form", FormController)
 
+import HoverController from "./hover_controller"
+application.register("hover", HoverController)
+
 import ImageController from "./image_controller"
 application.register("image", ImageController)
 

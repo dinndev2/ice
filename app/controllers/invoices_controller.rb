@@ -3,6 +3,8 @@ class InvoicesController < ApplicationController
 
   def index
     @invoices = Invoice.all
+    @invoice = Invoice.new
+    @invoice.line_expences.build
   end
 
   def show
@@ -34,6 +36,10 @@ class InvoicesController < ApplicationController
     end
 
     if @invoice.save
+      respond_to do |format|
+        format.html { redirect_to invoice_path(@invoice), notice: "Invoice updated" }
+        format.turbo_stream
+      end
       redirect_to invoice_path(@invoice), notice: "Invoice updated"
     else
       render :edit, status: :unprocessable_entity

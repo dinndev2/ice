@@ -1,6 +1,5 @@
-<%= link_to "Back to invoices", invoices_path %>
-<div>
+<%= turbo_frame_tag 'invoice' do %>
   <%= render 'form', invoice: @invoice %> 
   <%= link_to "Download", download_pdf_invoice_path(@invoice, format: :pdf) %>
   <%= link_to "Send And Save", send_and_save_modal_content_email_attempts_path(invoice_id: @invoice), data: {turbo_frame: "modal"} %>
-</div> 
+<% end %> 
