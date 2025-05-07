@@ -1,6 +1,6 @@
 <%= link_to "Back to invoices", invoices_path %>
 
 
-<%= turbo_frame_tag @invoice do %>
+<%= turbo_frame_tag 'invoice' do %>
   <%= render 'form', invoice: @invoice %>
 <% end %>

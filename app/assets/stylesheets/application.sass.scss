@@ -78,6 +78,25 @@ body {
   }
 }
 
+.custom-hover-normal:hover {
+  color: $text-title;
+  transition: color 0.3s ease;
+  cursor: pointer;
+  background: white;
+  i {
+    color: $primary-bg;
+    transition: color 0.3s ease;
+  }
+}
+
+.rotate-on-hover {
+  transition: transform 0.3s ease;
+}
+
+.rotate-on-hover:hover {
+  transform: rotate(30deg);
+}
+
 .border-dashed {
   border-style: dashed !important;
   cursor: pointer;
