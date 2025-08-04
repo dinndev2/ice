@@ -2,23 +2,16 @@
 <html>
   <head>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+      @font-face {
+        font-family: 'DejaVu Sans';
+        src: url('file:///usr/share/fonts/truetype/dejavu/DejaVuSans.ttf');
+      }
 
       body {
-        font-family: "Plus Jakarta Sans", sans-serif;
+        font-family: 'DejaVu Sans', sans-serif;
         margin: 0;
         padding: 0;
-      }
-
-      .items-table th:first-child {
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
-
-      }
-
-      .items-table th:last-child {
-        border-top-right-radius: 5px;
-        border-bottom-right-radius: 5px;
+        font-size: 14px;
       }
 
       .header {
@@ -31,6 +24,7 @@
         display: table-cell;
         vertical-align: top;
         font-size: 2em;
+        margin: 0;
       }
 
       .header .logo {
@@ -41,12 +35,11 @@
 
       .info-table {
         width: 100%;
-        border-collapse: collapse;
         margin-bottom: 2em;
       }
 
       .info-table td {
-        padding: 12px 0;
+        padding: 10px 0;
         vertical-align: top;
       }
 
@@ -54,47 +47,48 @@
         width: 100%;
         border-collapse: collapse;
         text-align: left;
+        margin-top: 2em;
       }
 
       .items-table th {
-        padding: 8px;
+        padding: 10px;
         font-size: 15px;
         background: #4E4C4C;
         color: white;
+        font-weight: normal;
       }
 
       .items-table td {
-        padding: 8px;
+        padding: 10px;
       }
 
       .total-table {
         width: 100%;
-        border-collapse: collapse;
-        margin-top: 1em;
+        margin-top: 2em;
       }
 
       .total-table td {
-        font-size: 18px;
-        padding: 10px;
+        font-size: 16px;
+        padding: 8px;
       }
 
       .total-amount {
-        width: 150px;
+        width: 160px;
         text-align: center;
         background: #F8F8F8;
         border-radius: 5px;
-        padding: 10px 2px;
+        padding: 10px;
       }
     </style>
   </head>
   <body>
-    <div class="container mt-5 p-3">
+    <div class="container" style="padding: 40px;">
 
       <div class="header">
         <h1>INVOICE <%= @invoice.name %></h1>
         <div class="logo">
-          <% if  @invoice.company_logo.present?  %>
-            <%= image_tag @invoice.company_logo.representation(resize_to_limit: [150, 150]), "data-image-target": "displayer", accept: 'image/png,image/jpeg,image/jpg,image/gif,image/svg+xml' %>
+          <% if @invoice.company_logo.attached? %>
+            <%= wicked_pdf_image_tag url_for(@invoice.company_logo) %>
           <% end %>
         </div>
       </div>
@@ -105,7 +99,7 @@
           <td style="text-align: right;"><strong>Date:</strong> <%= @invoice.date %></td>
         </tr>
         <tr>
-          <td><strong>To</strong> <%= @invoice.to %></td>
+          <td><strong>To:</strong> <%= @invoice.to %></td>
           <td style="text-align: right;"><strong>Due Date:</strong> <%= @invoice.due_date %></td>
         </tr>
         <tr>

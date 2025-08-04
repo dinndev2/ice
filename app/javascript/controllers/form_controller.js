@@ -55,7 +55,7 @@ export default class extends Controller {
 
   removeLine(event) {
     const currentDeleteBtn = event.currentTarget;
-    const parentExpenceLine = currentDeleteBtn.parentElement
+    const parentExpenceLine = currentDeleteBtn.closest("[data-form-target='expenceLine']");
     const hiddenDeleteInput = parentExpenceLine.querySelector("input[name*='_destroy']")
     const hiddenCurrentTotalInput = parentExpenceLine.querySelector("input[name*='total']")
     if (hiddenDeleteInput) {

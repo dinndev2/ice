@@ -19,15 +19,9 @@
         Create new Invoice
         <i class="bi bi-plus fs-4"></i>
     <% end %>
-
-    <div class="d-flex flex-col gap-2">
-      <%= turbo_frame_tag 'invoices' do %>
-        <%= render @invoices %>
-      <% end %>
-    </div>
+    <%= turbo_frame_tag 'invoice', class: "w-100" do %>  
+      <%= render 'form', invoice: @invoice %>
+    <% end %>
   </div>
-  <%= turbo_frame_tag 'invoice' do %>  
-    <%= render 'form', invoice: @invoice %>
-  <% end %>
 </div>
 

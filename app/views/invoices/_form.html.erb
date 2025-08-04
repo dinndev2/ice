@@ -1,84 +1,125 @@
-<div data-controller="form" class="container bg-white mt-4 p-3 rounded-3" data-form-role-value="invoice">  
-  <%= simple_form_for invoice, default: {input_html: { class: "form-control" }} do |f| %>
-    <!-- ...[unchanged preamble content]... -->
+<div class="d-flex gap-4">
+  <%= turbo_frame_tag 'invoices', class: "d-flex flex-column gap-2 mt-4" do %>
+    <%= render partial: 'invoice', collection: @invoices, as: :invoice_list, locals: {invoice: invoice}  %>
+  <% end %>
+  <div data-controller="form" class="container bg-white mt-4 p-3 rounded-3" data-form-role-value="invoice">  
+    <%= simple_form_for invoice, default: {input_html: { class: "form-control" }} do |f| %>
 
-    <!-- Header Row for md+ screens only -->
-    <div class="mb-2 p-2 rounded d-none d-md-flex primary-bg align-items-center">
-      <div class="row w-100">
-        <div class="col-md-6 fw-bold">ITEM / SERVICE</div>
-        <div class="col-md-2 fw-bold">QUANTITY</div>
-        <div class="col-md-2 fw-bold">RATE</div>
-        <div class="col-md-2 fw-bold">TOTAL</div>
+      <div class="row mb-4">
+        <div class="col-12 col-md-6">
+          <div class="d-flex main-bg p-2 gap-2 align-items-center rounded-2 border">
+            <label for="invoice_name" class="fs-2 fw-semibold text-title">INVOICE</label>
+            <%= f.input :name, label: false %>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 d-flex flex-column align-items-end justify-content-end" data-controller="image">
+          <label for="invoice_company_logo" class="main-bg rounded-2 border-dashed text-center p-3 secondary-color border-light-subtle d-flex flex-column">
+            <% if invoice.company_logo.representable? %>
+              <%= image_tag invoice.company_logo.representation(resize_to_limit: [150, 150]), "data-image-target": "displayer", class: "img-fluid", accept: 'image/png,image/jpeg,image/jpg,image/gif,image/svg+xml' %>
+            <% else %>
+              <img data-image-target="displayer" accept='image/png,image/jpeg,image/jpg,image/gif,image/svg+xml' src="" alt="Upload Company Logo" class="img-fluid">
+            <% end %>
+          </label>
+          <%= f.input :company_logo, label: false, input_html: {"data-action": "change->image#now", class: "visually-hidden"} %>
+          <span data-image-target="errorMessage" id="company_logo_error" class="text-danger fs-6"></span>
+        </div>
       </div>
-    </div>
 
-    <div data-form-target="expenceParentContainer" data-form-total-value="0">
-      <%= f.simple_fields_for :line_expences do |l| %>
-        <div data-form-target="expenceLine">
-          <div class="row g-2 align-items-center">
+      <div class="row mb-4">
+        <div class="col-12 col-md-6">
+          <%= f.input :details, label: 'Who is this from', input_html: {class: "h-100"} %>
+        </div>
+        <div class="col-12 col-md-6">
+          <%= f.input :date, as: :string, input_html: {type: :date, onclick: "this.showPicker()"} %>
+          <%= f.input :due_date, as: :string, input_html: {type: :date, onclick: "this.showPicker()"} %>
+        </div>
+      </div>
+
+      <div class="row mb-4">
+        <div class="col-12 col-md-6">
+          <%= f.input :from %>
+        </div>
+        <div class="col-12 col-md-6">
+          <%= f.input :to %> 
+        </div>
+      </div>
+
+      <!-- Header Row for md+ screens only -->
+      <div class="mb-2 p-2 rounded d-none d-md-flex primary-bg align-items-center">
+        <div class="row w-100">
+          <div class="col-md-6 fw-bold">ITEM / SERVICE</div>
+          <div class="col-md-2 fw-bold">QUANTITY</div>
+          <div class="col-md-2 fw-bold">RATE</div>
+          <div class="col-md-2 fw-bold">TOTAL</div>
+        </div>
+      </div>
+
+      <div data-form-target="expenceParentContainer" data-form-total-value="0">
+        <%= f.simple_fields_for :line_expences do |l| %>
+          <div data-form-target="expenceLine">
+            <div class="row g-2 align-items-center">
+              <div class="col-12 col-md-6">
+                <%= l.input :name, label: false, placeholder: "item/service description..." %>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="row g-2 align-items-center">
+                  <div class="col-6 col-md-3">
+                    <%= l.input :quantity, label: false, input_html: {"data-action": "input->form#calculateLineTotal"} %>
+                  </div>
+                  <div class="col-6 col-md-3">
+                    <%= l.input :rate, label: false, input_html: {"data-action": "input->form#calculateLineTotal"} %>
+                  </div>
+                  <div class="col-6 col-md-5">
+                    <%= l.input :total, label: false, input_html: {readonly: true, "data-form-target": "expenceTotal"} %>
+                  </div>
+                  <% if f.object.persisted? %>
+                    <div class="col-6 mb-3 col-md-1 text-end" data-action="click->form#removeLine">
+                      <%= l.hidden_field :_destroy %>
+                        <i class="bi bi-x-square-fill custom-hover-danger text-title fs-2"></i>
+                      </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Shadow Line Template -->
+        <div data-form-target="expenceLine" id="line-expense-template">
+          <div data-form-target="shadow" class="row g-2 align-items-center visually-hidden mb-3">
             <div class="col-12 col-md-6">
-              <%= l.input :name, label: false, placeholder: "item/service description..." %>
+              <input type="text" name="invoice[line_expences_attributes][new][name]" class="form-control" placeholder="item/service description..." id="invoice_line_expences_attributes_new_name" />
             </div>
             <div class="col-12 col-md-6">
               <div class="row g-2 align-items-center">
                 <div class="col-6 col-md-3">
-                  <%= l.input :quantity, label: false, input_html: {"data-action": "input->form#calculateLineTotal"} %>
+                  <input type="number" name="invoice[line_expences_attributes][new][quantity]" class="form-control" id="invoice_line_expences_attributes_new_quantity" data-action="input->form#calculateLineTotal" />
                 </div>
                 <div class="col-6 col-md-3">
-                  <%= l.input :rate, label: false, input_html: {"data-action": "input->form#calculateLineTotal"} %>
+                  <input type="number" name="invoice[line_expences_attributes][new][rate]" class="form-control" id="invoice_line_expences_attributes_new_rate" data-action="input->form#calculateLineTotal" />
                 </div>
                 <div class="col-6 col-md-5">
-                  <%= l.input :total, label: false, input_html: {readonly: true, "data-form-target": "expenceTotal"} %>
-                </div>
-                <div class="col-6 col-md-1 text-end" data-action="click->form#removeLine">
-                  <%= l.hidden_field :_destroy %>
-                  <i class="bi bi-x-square-fill custom-hover-danger text-title fs-2"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      <% end %>
-
-      <!-- Shadow Line Template -->
-      <div data-form-target="expenceLine" id="line-expense-template">
-        <div data-form-target="shadow" class="row g-2 align-items-center visually-hidden mb-3">
-          <div class="col-12 col-md-6">
-            <input type="text" name="invoice[line_expences_attributes][new][name]" class="form-control" placeholder="item/service description..." id="invoice_line_expences_attributes_new_name" />
-          </div>
-          <div class="col-12 col-md-6">
-            <div class="row g-2 align-items-center">
-              <div class="col-6 col-md-3">
-                <input type="number" name="invoice[line_expences_attributes][new][quantity]" class="form-control" id="invoice_line_expences_attributes_new_quantity" data-action="input->form#calculateLineTotal" />
-              </div>
-              <div class="col-6 col-md-3">
-                <input type="number" name="invoice[line_expences_attributes][new][rate]" class="form-control" id="invoice_line_expences_attributes_new_rate" data-action="input->form#calculateLineTotal" />
-              </div>
-              <div class="col-6 col-md-5">
-                <input type="number" name="invoice[line_expences_attributes][new][total]" class="form-control" id="invoice_line_expences_attributes_new_total" readonly data-form-target="expenceTotal" />
-              </div>
-              <div class="col-6 col-md-1 text-end" data-action="click->form#removeLine">
-                <input type="hidden" name="invoice[line_expences_attributes][new][_destroy]" />
-                <i class="bi bi-x-square-fill custom-hover-danger text-title fs-2"></i>
+                  <input type="number" name="invoice[line_expences_attributes][new][total]" class="form-control" id="invoice_line_expences_attributes_new_total" readonly data-form-target="expenceTotal" />
+                </div> 
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="d-inline-flex align-items-center custom-hover-primary primary-border py-1 px-2 gap-2 rounded" data-action="click->form#addNewLine" type="button">
-      <i class="bi bi-plus-square-fill text-title fs-6"></i>
-      Add new line
-    </div>
+      <div class="d-inline-flex align-items-center custom-hover-primary primary-border py-1 px-2 gap-2 rounded" data-action="click->form#addNewLine" type="button">
+        <i class="bi bi-plus-square-fill text-title fs-6"></i>
+        Add new line
+      </div>
 
-    <div class="d-flex justify-content-end mt-3">
-      <div class="d-flex main-bg p-2 gap-2 align-items-center rounded-2 border w-100 w-md-25">  
-        <label for="invoice_total" class="fs-5 fw-semibold w-75"> TOTAL DUE </label>
-        <%= f.input :total, label: false, input_html: {"data-form-target": "totalInvoiceInput", readonly: true} %> 
-      </div> 
-    </div>
+      <div class="d-flex justify-content-end mt-3">
+        <div class="d-flex main-bg p-2 gap-2 align-items-center rounded-2 border w-100 w-md-25">  
+          <label for="invoice_total" class="fs-5 fw-semibold w-75"> TOTAL DUE </label>
+          <%= f.input :total, label: false, input_html: {"data-form-target": "totalInvoiceInput", readonly: true} %> 
+        </div> 
+      </div>
 
-    <%= f.submit %>
-  <% end %>
+      <%= f.submit %>
+    <% end %>
+  </div>
 </div>

@@ -67,7 +67,7 @@ body {
   border: solid 2px $primary-bg;
 }
 
-.custom-hover-primary:hover {
+.active-btn, .custom-hover-primary:hover {
   color: white;
   transition: color 0.3s ease;
   cursor: pointer;

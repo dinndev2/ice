@@ -1,13 +1,8 @@
-<%= link_to invoice_path(invoice), class: "rounded text-decoration-none primary-border text-title custom-hover-primary d-inline-flex flex-column gap-2", data: {turbo_frame: 'invoice', turbo_action: 'advance' } do %>
-  <span class="fs-5 fw-semibold d-flex align-items-center px-2 pt-2 gap-2">
-    <i class="bi bi-file-earmark-pdf fs-3"></i>
-    <%= invoice.readable_name %>
-  </span>
-  <span class="fs-small border-top p-2 fw-semibold d-flex align-items-center justify-content-between">
-    <%= invoice.readable_date %>
-    <i class="bi bi-chevron-down fs-6"></i>
+<%= link_to invoice_path(invoice_list), class: "rounded text-decoration-none primary-border text-title custom-hover-primary d-inline-flex flex-column gap-2 #{invoice_list == invoice ? 'active-btn' : ''}", data: {turbo_frame: 'invoice', turbo_action: 'advance' } do %>
+  <span class="fs-7 fw-semibold d-flex align-items-center px-2 pt-2 gap-2">
+    <%= invoice_list.readable_name %>
   </span>
 <% end %>
-<% turbo_frame_tag invoice do %>
-  <% button_to "Destroy", invoice_path(invoice), method: :delete %>
+<% turbo_frame_tag invoice_list do %>
+  <% button_to "Destroy", invoice_path(invoice_list), method: :delete %>
 <% end %> 

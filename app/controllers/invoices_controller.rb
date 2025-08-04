@@ -8,6 +8,7 @@ class InvoicesController < ApplicationController
   end
 
   def show
+    @invoices = Invoice.all
   end
 
   def create
